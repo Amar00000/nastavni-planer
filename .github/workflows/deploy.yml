@@ -1,0 +1,70 @@
+# Builds the app and publishes it on GitHub Pages every time something is pushed to "main".
+# The tests run first: if one fails (for example a typo in a school calendar), nothing is published.
+#
+# One-time setup in the repository: Settings -> Pages -> Build and deployment -> Source: GitHub Actions
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ['main']
+  # Lets you start it by hand from the "Actions" tab
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deployment at a time; a newer push replaces one that is still running
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      # The site address contains the repository name (https://<user>.github.io/<repository>/),
+      # so it is taken from the repository itself and renaming the repository needs no code change.
+      # A repository called "<user>.github.io" is served from the root instead.
+      - name: Work out the site's base path
+        run: |
+          REPO="${GITHUB_REPOSITORY#*/}"
+          if [[ "$REPO" == *.github.io ]]; then
+            echo "BASE_PATH=/" >> "$GITHUB_ENV"
+          else
+            echo "BASE_PATH=/$REPO/" >> "$GITHUB_ENV"
+          fi
+
+      - name: Build
+        run: npm run build
+
+      - name: Set up Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload the built site
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

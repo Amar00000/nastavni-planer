@@ -1,0 +1,311 @@
+:root {
+  --bg: #f2f5f8;
+  --surface: #ffffff;
+  --ink: #1c2733;
+  --muted: #5b6978;
+  --line: #d3dae2;
+  --accent: #1f5f8b;
+  --accent-ink: #ffffff;
+  --accent-soft: #e4eff7;
+  --warn-bg: #fff4d6;
+  --warn-ink: #6b4500;
+  font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--ink);
+  background: var(--bg);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+h1, h2, h3, h4 { margin: 0; line-height: 1.25; }
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.topbar h1 { font-size: 1.25rem; font-weight: 600; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.message { color: var(--muted); font-size: 0.9rem; margin-right: 0.5rem; }
+.message.info { animation: message-fade 10s forwards; }
+.message.error { color: #9b1c1c; }
+@keyframes message-fade { 0%, 85% { opacity: 1; } 100% { opacity: 0; } }
+
+button {
+  font: inherit;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+button:hover { background: var(--accent-soft); }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+button.primary:hover { background: #184d72; }
+:focus-visible { outline: 3px solid #7fb4dc; outline-offset: 1px; }
+
+.layout {
+  display: grid;
+  /* two sidebar columns of 17rem with a 1rem gap, then the plans */
+  grid-template-columns: 35rem minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  /* The plans area keeps the width it had with the narrow sidebar: about 75% of the window,
+     never less than 70rem, plus the 17rem the sidebar gained. */
+  width: calc(max(75%, 70rem) + 17rem);
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+/* Two columns: basic info + schedule on the left, calendar on the right. The sidebar scrolls
+   with the page, so nothing is hidden. */
+.sidebar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+.sidebar-column { display: grid; gap: 1rem; min-width: 0; }
+.content { min-width: 0; }
+/* On a narrower window the sidebar moves above the plans, still in two columns */
+@media (max-width: 80rem) {
+  .layout { grid-template-columns: 1fr; padding: 1rem; }
+}
+/* ...and on a very narrow one the two columns stack */
+@media (max-width: 40rem) {
+  .sidebar { grid-template-columns: 1fr; }
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1.1rem 1.25rem;
+}
+.panel h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+.hint { color: var(--muted); font-size: 0.9rem; margin: 0 0 0.75rem; }
+
+.field { display: grid; gap: 0.2rem; margin-bottom: 0.65rem; }
+.field span, .static-field span { font-size: 0.85rem; color: var(--muted); }
+.field input, .field select {
+  font: inherit;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--ink);
+  width: 100%;
+}
+.field-inline { grid-template-columns: 1fr 4.5rem; align-items: center; }
+.field-inline span { font-size: 1rem; color: var(--ink); }
+.static-field { display: flex; justify-content: space-between; margin: 0 0 0.85rem; }
+
+.semester { margin-top: 1.25rem; }
+.semester h3 {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 1.05rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--accent);
+}
+.count { font-size: 0.85rem; font-weight: 400; color: var(--muted); }
+
+.month { margin-top: 1.1rem; }
+.month h4 {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+.lessons { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
+.lessons li { display: grid; grid-template-columns: 2rem minmax(0, 1fr) 3.5rem auto; align-items: center; gap: 0.4rem; }
+.lesson-no { color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+.lesson-date { color: var(--muted); font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.lessons input {
+  font: inherit;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  width: 100%;
+}
+
+.warning {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.warning ul { margin: 0.4rem 0 0; padding-left: 1.2rem; }
+
+/* View switch and month picker */
+.view-tabs, .month-picker { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.view-tabs { margin-bottom: 1rem; }
+.month-picker { margin-bottom: 1.1rem; }
+.view-tabs button.selected, .month-picker button.selected {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Monthly table */
+.month-title {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 1.05rem;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent);
+}
+.table-scroll { overflow-x: auto; }
+table.monthly { width: 100%; min-width: 38rem; border-collapse: collapse; table-layout: fixed; }
+table.monthly th, table.monthly td {
+  border: 1px solid var(--line);
+  padding: 0.45rem 0.4rem;
+  vertical-align: top;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+table.monthly th { background: var(--accent-soft); font-weight: 600; font-size: 0.9rem; }
+table.monthly th:nth-child(1) { width: 10%; }
+table.monthly th:nth-child(2) { width: 6%; }
+table.monthly th:nth-child(3) { width: 14%; }
+table.monthly th:nth-child(4) { width: 22%; }
+table.monthly td.num { text-align: center; font-variant-numeric: tabular-nums; }
+table.monthly tr.no-lessons td { color: var(--muted); }
+.muted { color: var(--muted); font-size: 0.9rem; }
+.units { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
+.units li { display: grid; grid-template-columns: 1.6rem minmax(0, 1fr); }
+table.monthly .lesson-no { text-align: left; }
+table.monthly td.edit-cell { position: relative; padding: 0; }
+.grow-mirror, .grow-textarea {
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  padding: 0.45rem 0.5rem;
+  box-sizing: border-box;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+.grow-mirror { min-height: 6rem; visibility: hidden; }
+.grow-textarea {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fbfcfd;
+  color: var(--ink);
+  resize: none;
+  overflow: hidden;
+}
+.grow-textarea:focus-visible { outline: 2px solid #7fb4dc; outline-offset: -2px; background: #fff; }
+table.monthly .grow-textarea:disabled { background: #f1f3f5; }
+
+/* Yearly table additions */
+.month-notes { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 0.75rem; margin: 0.6rem 0 0; }
+.month-notes .field { margin-bottom: 0; }
+.month-notes input {
+  font: inherit;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  width: 100%;
+}
+.totals {
+  margin: 1.1rem 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--line);
+  text-align: left;
+}
+.totals-achieved { margin-left: 2.5rem; }
+.year-totals { margin-top: 1.5rem; border-top: 2px solid var(--accent); font-weight: 700; }
+
+/* Panel headings with an action button */
+.panel-head, .month-head {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem;
+}
+.panel-head h2 { margin-bottom: 0; }
+.panel-head { margin-bottom: 0.25rem; }
+.month-head { margin-bottom: 0.5rem; }
+.month-head .month-title { flex: 1 1 18rem; margin-bottom: 0; }
+
+/* Calendar settings */
+.facts { display: grid; grid-template-columns: auto 1fr; gap: 0.2rem 0.75rem; margin: 0 0 0.9rem; font-size: 0.9rem; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.checks { border: 0; margin: 0 0 0.6rem; padding: 0; display: grid; gap: 0.35rem; }
+.checks legend { font-size: 0.85rem; color: var(--muted); padding: 0; margin-bottom: 0.35rem; }
+.checks label { display: grid; grid-template-columns: 1.2rem 1fr; gap: 0.5rem; align-items: start; }
+.checks input { margin-top: 0.3rem; }
+.checks small, .extra-days small { display: block; color: var(--muted); font-size: 0.8rem; }
+.subheading { font-size: 0.95rem; margin: 1rem 0 0.25rem; }
+.extra-days { list-style: none; margin: 0 0 0.75rem; padding: 0; display: grid; gap: 0.4rem; }
+.extra-days li { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.calendar-notes { margin: 0 0 0.75rem; padding-left: 1.1rem; color: var(--muted); font-size: 0.85rem; display: grid; gap: 0.3rem; }
+.hint a { color: var(--accent); }
+
+/* Unsaved-changes indicator in the header */
+.unsaved { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; color: #8a5a00; margin-right: 0.5rem; }
+.unsaved-dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: #d98e00; }
+
+/* Our own dialog box (replaces the browser's confirm) */
+button.danger { color: #9b1c1c; border-color: #d9a3a3; }
+button.danger:hover { background: #fbeaea; }
+.dialog {
+  border: 0; padding: 0; border-radius: 8px;
+  width: min(34rem, calc(100vw - 2rem));
+  color: var(--ink); background: var(--surface);
+  box-shadow: 0 10px 40px rgba(20, 30, 45, 0.35);
+}
+.dialog::backdrop { background: rgba(20, 30, 45, 0.45); }
+.dialog-body { padding: 1.4rem 1.5rem 1.25rem; }
+.dialog h2 { font-size: 1.15rem; margin: 0 0 0.6rem; }
+.dialog p { margin: 0 0 1rem; }
+.dialog-check { display: grid; grid-template-columns: 1.2rem 1fr; gap: 0.6rem; align-items: start; margin: 0 0 1.1rem; padding: 0.75rem; background: var(--bg); border-radius: 6px; }
+.dialog-check input { margin-top: 0.25rem; }
+.dialog-check small { display: block; color: var(--muted); font-size: 0.82rem; margin-top: 0.25rem; }
+.dialog-buttons { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.5rem; }
+
+
+/* Buttons next to each theme: faint until the row is hovered or focused */
+.lesson-actions { display: inline-flex; gap: 0.1rem; opacity: 0.4; transition: opacity 0.12s; }
+.lessons li:hover .lesson-actions, .lessons li:focus-within .lesson-actions { opacity: 1; }
+@media (hover: none) { .lesson-actions { opacity: 0.85; } }
+.icon-btn {
+  display: inline-grid; place-items: center;
+  width: 1.8rem; height: 1.8rem; padding: 0;
+  border: 1px solid transparent; border-radius: 4px; background: transparent; color: var(--muted);
+}
+.icon-btn:hover:not(:disabled) { background: var(--accent-soft); color: var(--accent); }
+.icon-btn.danger:hover:not(:disabled) { background: #fbeaea; color: #9b1c1c; }
+.icon-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* Choosing a new place for a theme */
+.move-banner {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem;
+  margin: 0.75rem 0; padding: 0.7rem 0.9rem;
+  background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(20, 30, 45, 0.15);
+}
+.lessons li.moving { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; background: var(--accent-soft); }
+.lessons li.drop-slot { display: block; margin: 0.1rem 0; }
+.lessons li.drop-slot button {
+  display: block; width: 100%; padding: 0.2rem 0.5rem;
+  border: 1px dashed var(--accent); border-radius: 4px; background: transparent;
+  color: var(--accent); font-size: 0.85rem; cursor: pointer;
+}
+.lessons li.drop-slot button:hover, .lessons li.drop-slot button:focus-visible { background: var(--accent); color: var(--accent-ink); }
+
+/* A long word with no spaces must never stretch a box wider than the screen */
+.dialog p, .move-banner strong, .warning li { overflow-wrap: anywhere; }

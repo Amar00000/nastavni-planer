@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#1f5f8b"/>
+  <!-- the page of a plan: header strip, binder rings, and a grid of lessons -->
+  <rect x="12" y="14" width="40" height="38" rx="5" fill="#ffffff"/>
+  <path d="M12 19a5 5 0 0 1 5-5h30a5 5 0 0 1 5 5v6H12z" fill="#a9cbe3"/>
+  <rect x="21" y="9" width="5" height="10" rx="2.5" fill="#ffffff"/>
+  <rect x="38" y="9" width="5" height="10" rx="2.5" fill="#ffffff"/>
+  <g fill="#1f5f8b">
+    <rect x="17" y="30" width="8" height="6" rx="1.5"/>
+    <rect x="28" y="30" width="8" height="6" rx="1.5"/>
+    <rect x="39" y="30" width="8" height="6" rx="1.5"/>
+    <rect x="17" y="40" width="8" height="6" rx="1.5"/>
+    <rect x="28" y="40" width="8" height="6" rx="1.5"/>
+  </g>
+  <rect x="39" y="40" width="8" height="6" rx="1.5" fill="#a9cbe3"/>
+</svg>
