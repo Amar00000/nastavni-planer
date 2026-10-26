@@ -6,15 +6,20 @@ the official school calendar of the canton, and exports the plans as editable Wo
 
 The interface and the generated documents are in Bosnian.
 
-**Live app:** `https://<your-username>.github.io/<repository>/`
+[![Deploy to GitHub Pages](https://github.com/Amar00000/nastavni-planer/actions/workflows/deploy.yml/badge.svg)](https://github.com/Amar00000/nastavni-planer/actions/workflows/deploy.yml)
+
+**Live app: https://amar00000.github.io/nastavni-planer/**
+
+![Screenshot of the app](docs/screenshot_1.png)
+
+![Screenshot of the app](docs/screenshot_2.png)
 
 ## What it does
 
 - Calculates the lessons of the whole school year from the weekly timetable (days of the week and hours per day),
   taking the official school calendar into account: semester dates, winter break, state and religious holidays,
-  and days without classes added by the school.
-- Generates the **yearly plan** table. Themes are typed once there; the **monthly plans** pick them up
-  automatically, week by week.
+  and days without classes added by the user.
+- Generates the **yearly plan** table. Lesson themes are typed once there; then automatically distributed into **monthly plans**.
 - Lets the teacher reorganise the themes: remove one (the ones below move up), move one step up or down, or pick a
   theme up and drop it at any place in the year. This makes it easy to reuse last year's plan.
 - Exports the yearly plan and each monthly plan as **Word (.docx)** documents that can be edited further.
@@ -43,7 +48,7 @@ plans keep using the calendar they were made with. The other cantons are not add
 2. Copy the newest entry in `src/core/calendars.ts`, put the copy first, and change its id, dates and holidays.
 3. Run `npm test`. Consistency tests check that dates are real, in a sensible order and in the right school year.
 
-Never edit or delete an old entry: saved plans refer to it.
+**Never edit or delete an old entry, saved plans refer to it.**
 
 ## Technology
 
@@ -51,7 +56,7 @@ React, TypeScript and Vite. [`docx`](https://github.com/dolanmiu/docx) generates
 [`date-fns`](https://date-fns.org) handles dates, [Vitest](https://vitest.dev) runs the tests. The calculation of
 lessons (`src/core`) is plain TypeScript without any interface code, and is covered by unit tests.
 
-## Running it locally
+## Running locally
 
 ```bash
 npm install
@@ -69,7 +74,5 @@ repository is renamed.
 
 ## Limitations
 
-- Calendars exist only for the cantons listed above.
+- Missing calendars. To be added before the start of the next academic year.
 - Saving through the normal "Save as" window works in Chrome and Edge. Other browsers save to the Downloads folder.
-- Kanton Sarajevo's calendar contains a few details that are described in the notes shown under the calendar in
-  the app and should be checked against the official document.
