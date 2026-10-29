@@ -79,7 +79,7 @@ export async function saveFile(options: SaveFileOptions): Promise<SaveResult> {
 export function saveTextFile(text: string, fileName: string): Promise<SaveResult> {
   return saveFile({
     fileName,
-    description: 'Plan nastavnih sadržaja (.json)',
+    description: 'Nastavni planer (.json)',
     mime: 'application/json',
     extension: '.json',
     produce: async () => new Blob([text], { type: 'application/json' }),

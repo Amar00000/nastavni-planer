@@ -1,4 +1,4 @@
-# Plan nastavnih sadržaja
+# Nastavni planer
 
 A web app that helps teachers in the Federation of Bosnia and Herzegovina create their **yearly and monthly
 teaching plans**. The teacher enters the weekly timetable, the app works out every lesson of the school year from
@@ -10,9 +10,9 @@ The interface and the generated documents are in Bosnian.
 
 **Live app: https://amar00000.github.io/nastavni-planer/**
 
-![Screenshot of the app](docs/screenshot_1.png)
+![Yearly plan](docs/screenshot_year.png)
 
-![Screenshot of the app](docs/screenshot_2.png)
+![Monthly plan](docs/screenshot_month.png)
 
 ## What it does
 

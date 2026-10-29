@@ -309,3 +309,7 @@ button.danger:hover { background: #fbeaea; }
 
 /* A long word with no spaces must never stretch a box wider than the screen */
 .dialog p, .move-banner strong, .warning li { overflow-wrap: anywhere; }
+
+/* Logo next to the name in the header */
+.brand { display: flex; align-items: center; gap: 0.65rem; }
+.brand-logo { display: block; width: 2rem; height: 2rem; border-radius: 6px; }

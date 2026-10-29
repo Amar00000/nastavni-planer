@@ -275,7 +275,7 @@ export function buildMonthlyDocument(
   month: MonthPlan,
 ): Document {
   return new Document({
-    creator: 'Plan nastavnih sadržaja',
+    creator: 'Nastavni planer',
     title: `Mjesečni plan rada, ${month.name} ${month.year}.`,
     styles: {
       default: {

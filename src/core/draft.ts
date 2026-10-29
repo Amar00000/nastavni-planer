@@ -7,7 +7,8 @@ import type { ProjectData } from './project'
  * anywhere. It is removed as soon as the plan is saved to a file.
  */
 
-const KEY = 'plan-nastavnih-sadrzaja:nacrt:v1'
+/** Where the draft lives in the browser's storage. */
+export const DRAFT_KEY = 'nastavni-planer-draft'
 
 export interface Draft {
   /** ISO time of the last automatic save */
@@ -28,7 +29,7 @@ function defaultStorage(): Storage | null {
 export function writeDraft(project: ProjectData, storage: Storage | null = defaultStorage(), now = new Date()): boolean {
   if (!storage) return false
   try {
-    storage.setItem(KEY, JSON.stringify({ savedAt: now.toISOString(), project }))
+    storage.setItem(DRAFT_KEY, JSON.stringify({ savedAt: now.toISOString(), project }))
     return true
   } catch {
     return false
@@ -37,7 +38,7 @@ export function writeDraft(project: ProjectData, storage: Storage | null = defau
 
 export function clearDraft(storage: Storage | null = defaultStorage()): void {
   try {
-    storage?.removeItem(KEY)
+    storage?.removeItem(DRAFT_KEY)
   } catch {
     // nothing to clean up
   }
@@ -50,7 +51,7 @@ export function clearDraft(storage: Storage | null = defaultStorage()): void {
 export function readDraft(storage: Storage | null = defaultStorage()): Draft | null {
   if (!storage) return null
   try {
-    const raw = storage.getItem(KEY)
+    const raw = storage.getItem(DRAFT_KEY)
     if (raw === null) return null
     const stored = JSON.parse(raw) as { savedAt?: unknown; project?: unknown }
     if (typeof stored.savedAt !== 'string' || Number.isNaN(Date.parse(stored.savedAt))) throw new Error('bad date')

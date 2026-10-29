@@ -316,7 +316,11 @@ export default function App() {
   return (
     <>
       <header className="topbar">
-        <h1>Plan nastavnih sadržaja</h1>
+        <div className="brand">
+          {/* the logo is decorative: the name next to it says the same, so it has no alt text */}
+          <img className="brand-logo" src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" width={32} height={32} />
+          <h1>Nastavni planer</h1>
+        </div>
         <div className="actions">
           {message && (
             <span key={message.id} className={`message ${message.kind}`} role="status">

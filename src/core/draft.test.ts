@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { clearDraft, readDraft, writeDraft } from './draft'
+import { DRAFT_KEY, clearDraft, readDraft, writeDraft } from './draft'
 import { createEmptyProject, projectFingerprint } from './project'
 
 /** A stand-in for the browser's localStorage */
@@ -27,6 +27,14 @@ const sample = () => {
 }
 
 describe('draft (automatic save in the browser)', () => {
+  it('is stored under a key named after the app', () => {
+    expect(DRAFT_KEY).toBe('nastavni-planer-draft')
+    const storage = fakeStorage()
+    writeDraft(sample(), storage)
+    expect(storage.getItem(DRAFT_KEY)).not.toBeNull()
+    expect(storage.length).toBe(1) // and nothing else is written
+  })
+
   it('stores a plan and gives it back unchanged, with the time of the save', () => {
     const storage = fakeStorage()
     const when = new Date('2026-10-24T12:30:00Z')
@@ -62,7 +70,7 @@ describe('draft (automatic save in the browser)', () => {
 
   it('throws away a damaged draft', () => {
     const storage = fakeStorage()
-    storage.setItem('plan-nastavnih-sadrzaja:nacrt:v1', '{ this is not json')
+    storage.setItem(DRAFT_KEY, '{ this is not json')
     expect(readDraft(storage)).toBeNull()
     expect(storage.length).toBe(0) // and does not keep it around
   })

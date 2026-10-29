@@ -324,7 +324,7 @@ export function buildYearlyDocument(
   if (second.length) tables.push(semesterTable(second, first.length, project.themes, project.monthNotes))
 
   return new Document({
-    creator: 'Plan nastavnih sadržaja',
+    creator: 'Nastavni planer',
     title: `Godišnji plan nastavnih sadržaja ${calendar.schoolYear}`,
     styles: {
       default: {
